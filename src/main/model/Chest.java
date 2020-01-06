@@ -132,14 +132,12 @@ public abstract class Chest {
         return cardRewards;
     }
 
-    public int getRandomInt(int min, int max) {
-        int x = (int)(Math.random()*((max - min) + 1)) + min;
-        return x;
+    protected int getRandomInt(int min, int max) {
+        return (int)(Math.random()*((max - min) + 1)) + min;
     }
 
-    public double getRandomDouble(double min, double max) {
-        double x = (int)(Math.random()*((max - min) + 1)) + min;
-        return x;
+    protected double getRandomDouble100() {
+        return (int)(Math.random()*(((double) 100 - (double) 0) + 1)) + (double) 0;
     }
 
     public abstract void getLegendary();

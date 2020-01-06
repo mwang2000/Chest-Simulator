@@ -10,17 +10,19 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Scanner;
 
-public class User implements Serializable {
+class User implements Serializable {
     private int gold;
     private int xp;
     private int level;
     private ArrayList<Card> deck;
     private ArrayList<CardNumberPair> collection;
     private ArrayList<String> chestCycle;
+    private ArrayList<Integer> levelXp;
     private ArrayList<Integer> upgradeCost;
+    private ArrayList<Integer> cardXp;
     private int cursor;
 
-    public User () {
+    User() {
         gold = 0;
         xp = 0;
         level = 1;
@@ -28,7 +30,22 @@ public class User implements Serializable {
         collection = new ArrayList<>();
         cursor = (int)(Math.random()*(241));
         chestCycle = new ArrayList<>();
+        levelXp = new ArrayList<>();
         upgradeCost = new ArrayList<>();
+        cardXp = new ArrayList<>();
+        levelXp.add(0);
+        levelXp.add(20);
+        levelXp.add(70);
+        levelXp.add(170);
+        levelXp.add(370);
+        levelXp.add(770);
+        levelXp.add(1770);
+        levelXp.add(3770);
+        levelXp.add(8770);
+        levelXp.add(18770);
+        levelXp.add(48770);
+        levelXp.add(88770);
+        levelXp.add(168770);
         upgradeCost.add(5);
         upgradeCost.add(20);
         upgradeCost.add(50);
@@ -41,6 +58,18 @@ public class User implements Serializable {
         upgradeCost.add(20000);
         upgradeCost.add(50000);
         upgradeCost.add(100000);
+        cardXp.add(4);
+        cardXp.add(5);
+        cardXp.add(6);
+        cardXp.add(10);
+        cardXp.add(25);
+        cardXp.add(50);
+        cardXp.add(100);
+        cardXp.add(200);
+        cardXp.add(400);
+        cardXp.add(600);
+        cardXp.add(800);
+        cardXp.add(1600);
         addChests(240);
         replaceChest(3,"Gold");
         replaceChest(6,"Gold");
@@ -102,7 +131,6 @@ public class User implements Serializable {
         replaceChest(158,"Giant");
         replaceChest(190,"Giant");
         replaceChest(230,"Giant");
-
     }
 
     private void replaceChest(int index, String chest) {
@@ -110,48 +138,29 @@ public class User implements Serializable {
         chestCycle.add(index,chest);
     }
 
-    public void addChests(int number) {
+    private void addChests(int number) {
         for (int i = 0; i < number; i++) {
             chestCycle.add("Silver");
         }
     }
 
-    public void addGold(int gold) {
+    private void addGold(int gold) {
         this.gold += gold;
     }
 
-    public void addXp(int exp) {
-        xp += exp;
-        if (xp > 20 && xp <70) {
-            level = 2;
-        } else if (xp < 170) {
-            level = 3;
-        } else if (xp < 370) {
-            level = 4;
-        } else if (xp < 770) {
-            level = 5;
-        } else if (xp < 1770) {
-            level = 6;
-        } else if (xp < 3770) {
-            level = 7;
-        } else if (xp < 8770) {
-            level = 8;
-        } else if (xp < 18770) {
-            level = 9;
-        } else if (xp < 48770) {
-            level = 10;
-        } else if (xp < 88770) {
-            level = 11;
-        } else if (xp < 168770) {
-            level = 12;
-        } else {
-            level = 13;
+    private void update() {
+        level = 0;
+        for (Integer i : levelXp) {
+            if (xp >= i) {
+                level++;
+            }
         }
     }
 
-    public void showDeck() {
-        System.out.println("You have " + gold + " gold");
-        System.out.println("Level: " + level);d` `
+    void showDeck() {
+        System.out.println("Gold " + gold);
+        System.out.println("Level: " + level + " " + (xp - levelXp.get(level - 1)) + "/" +
+                levelXp.get(level) + " experience points");
         System.out.println("Deck:\n" + printDeck());
     }
 
@@ -163,7 +172,7 @@ public class User implements Serializable {
         return print.toString();
     }
 
-    public void printCollection() {
+    void printCollection() {
         for (CardNumberPair c : collection) {
             c.print();
         }
@@ -274,18 +283,18 @@ public class User implements Serializable {
         return null;
     }
 
-    public void upgradeCard() {
+    void upgradeCard() {
         System.out.println("Which card would you like to upgrade?");
         Card card = chooseCard();
         CardNumberPair cardNumberPair = findPair(card);
         if (cardNumberPair != null) {
             if (cardNumberPair.upgradeable()) {
-                cardNumberPair.setNumber(cardNumberPair.getNumber() - cardNumberPair.getNumberToNextLevel());
-                assert card != null;
-                card.upgrade();
-                cardNumberPair.update();
                 if (gold >= requiredGold(card)) {
                     gold -= requiredGold(card);
+                    assert card != null;
+                    calculateXp(card);
+                    cardNumberPair.upgrade();
+                    cardNumberPair.update();
                     cardNumberPair.print();
                 } else {
                     System.out.println("Not enough gold to upgrade.");
@@ -316,6 +325,27 @@ public class User implements Serializable {
         }
     }
 
+    private void calculateXp(Card card) {
+        int xp;
+        if (card instanceof CommonCard || card instanceof RareCard) {
+            xp =  cardXp.get(card.level - 1);
+        } else if (card instanceof EpicCard) {
+            if (card.level == 6) {
+                xp = 25;
+            } else {
+                xp = cardXp.get(card.level - 1);
+            }
+        } else {
+            if (card.level == 9) {
+                xp = 250;
+            } else {
+                xp = cardXp.get(card.level - 1);
+            }
+        }
+        this.xp += xp;
+        update();
+    }
+
     private CardNumberPair findPair(Card card) {
         for (CardNumberPair c : collection) {
             if (c.getCard() == card) {
@@ -325,14 +355,14 @@ public class User implements Serializable {
         return null;
     }
 
-    public void save() throws IOException {
+    void save() throws IOException {
         FileOutputStream fos = new FileOutputStream("UserSavedData");
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         oos.writeObject(this);
         oos.close();
     }
 
-    public User load() throws IOException, ClassNotFoundException {
+    User load() throws IOException, ClassNotFoundException {
         FileInputStream fis = new FileInputStream("UserSavedData");
         ObjectInputStream ois = new ObjectInputStream(fis);
         User user = (User)ois.readObject();

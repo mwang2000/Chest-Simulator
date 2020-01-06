@@ -15,17 +15,17 @@ public class CardNumberPair implements Serializable {
         numberToNextLevel = 2;
         cardsToUpgrade = new ArrayList<>();
         cardsToUpgrade.add(2);
-        cardsToUpgrade.add(6);
-        cardsToUpgrade.add(16);
-        cardsToUpgrade.add(36);
-        cardsToUpgrade.add(86);
-        cardsToUpgrade.add(186);
-        cardsToUpgrade.add(386);
-        cardsToUpgrade.add(786);
-        cardsToUpgrade.add(1586);
-        cardsToUpgrade.add(2586);
-        cardsToUpgrade.add(4586);
-        cardsToUpgrade.add(9586);
+        cardsToUpgrade.add(4);
+        cardsToUpgrade.add(10);
+        cardsToUpgrade.add(20);
+        cardsToUpgrade.add(50);
+        cardsToUpgrade.add(100);
+        cardsToUpgrade.add(200);
+        cardsToUpgrade.add(400);
+        cardsToUpgrade.add(800);
+        cardsToUpgrade.add(1000);
+        cardsToUpgrade.add(2000);
+        cardsToUpgrade.add(5000);
     }
 
     public int getNumber() {
@@ -76,16 +76,8 @@ public class CardNumberPair implements Serializable {
         System.out.println(card.getName() + " Level " + card.level + " " + number + "/" + numberToNextLevel);
     }
 
-//    @Override
-//    public void update(Observable o, Object arg) {
-//        if (card instanceof CommonCard) {
-//            numberToNextLevel = cardsToUpgrade.get(card.level - 1);
-//        } else if (card instanceof RareCard) {
-//            numberToNextLevel = cardsToUpgrade.get(card.level - 3);
-//        } else if (card instanceof EpicCard) {
-//            numberToNextLevel = cardsToUpgrade.get(card.level - 6);
-//        } else {
-//            numberToNextLevel = cardsToUpgrade.get(card.level - 9);
-//        }
-//    }
+    public void upgrade() {
+        card.level++;
+        number -= numberToNextLevel;
+    }
 }

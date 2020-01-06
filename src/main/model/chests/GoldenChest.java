@@ -16,21 +16,21 @@ public class GoldenChest extends Chest {
     }
 
     public void getLegendary() {
-        if (getRandomDouble(0,100) <= 0.673) {
+        if (getRandomDouble100() <= 0.673) {
             Card legendary = legendaryCards.get(getRandomInt(0, legendaryCards.size() - 1));
             cardRewards.add(new CardNumberPair(legendary, 1));
         }
     }
 
     public void getEpic() {
-        if (getRandomDouble(0,100) <= 19) {
+        if (getRandomDouble100() <= 19) {
             Card epic = epicCards.get(getRandomInt(0, epicCards.size() - 1));
             cardRewards.add(new CardNumberPair(epic, 1));
         }
     }
 
     public void getRares() {
-        boolean extraRare = getRandomDouble(0,100) <= 50;
+        boolean extraRare = getRandomDouble100() <= 50;
         ArrayList<Card> copy = new ArrayList<>(rareCards);
         Card rare = copy.get(getRandomInt(0, copy.size() - 1));
         copy.remove(rare);

@@ -18,7 +18,7 @@ public class MagicalChest extends Chest {
 
     @Override
     public void getLegendary() {
-        if (getRandomDouble(0,100) <= 22.194) {
+        if (getRandomDouble100() <= 22.194) {
             Card legendary = legendaryCards.get(getRandomInt(0, legendaryCards.size() - 1));
             cardRewards.add(new CardNumberPair(legendary, 1));
         }
@@ -26,7 +26,7 @@ public class MagicalChest extends Chest {
 
     @Override
     public void getEpic() {
-        if (getRandomDouble(0,100) <= 40) {
+        if (getRandomDouble100() <= 40) {
             Card epic = epicCards.get(getRandomInt(0, epicCards.size() - 1));
             cardRewards.add(new CardNumberPair(epic, 1));
         }
@@ -35,7 +35,7 @@ public class MagicalChest extends Chest {
     @Override
     public void getRares() {
         boolean extraRare = false;
-        if (getRandomDouble(0,100) <= 80) {
+        if (getRandomDouble100() <= 80) {
             extraRare = true;
         }
         ArrayList<Card> copy = new ArrayList<>(rareCards);

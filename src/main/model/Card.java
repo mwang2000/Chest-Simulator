@@ -19,10 +19,6 @@ public abstract class Card implements Serializable {
         return level;
     }
 
-    public void upgrade() {
-        level++;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

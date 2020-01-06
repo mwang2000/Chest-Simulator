@@ -16,11 +16,11 @@ public class SilverChest extends Chest {
     }
 
     public boolean hasLegendary() {
-        return getRandomDouble(0,100) <= 0.135;
+        return getRandomDouble100() <= 0.135;
     }
 
     public boolean hasEpic() {
-        return getRandomDouble(0,100) <= 3.8;
+        return getRandomDouble100() <= 3.8;
     }
 
     public void getLegendary() {
@@ -38,7 +38,7 @@ public class SilverChest extends Chest {
     }
 
     public void getRares() {
-        boolean extraRare = getRandomDouble(0,100) <= 11.111;
+        boolean extraRare = getRandomDouble100() <= 11.111;
         Card rare = rareCards.get(getRandomInt(0, rareCards.size() - 1));
         if (extraRare) {
             Card rare2 = rareCards.get(getRandomInt(0, rareCards.size() - 1));

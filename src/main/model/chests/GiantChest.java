@@ -17,7 +17,7 @@ public class GiantChest extends Chest {
     }
     @Override
     public void getLegendary() {
-        if (getRandomDouble(0,100) <= 2.33) {
+        if (getRandomDouble100() <= 2.33) {
             Card legendary = legendaryCards.get(getRandomInt(0, legendaryCards.size() - 1));
             cardRewards.add(new CardNumberPair(legendary, 1));
         }
@@ -32,7 +32,7 @@ public class GiantChest extends Chest {
     }
 
     public boolean extraEpic() {
-        return getRandomDouble(0,100) <= 65.8;
+        return getRandomDouble100() <= 65.8;
     }
 
     private boolean twoCommons() {
@@ -41,7 +41,7 @@ public class GiantChest extends Chest {
 
     @Override
     public void getRares() {
-        boolean extraRare = getRandomDouble(0,100) <= 80;
+        boolean extraRare = getRandomDouble100() <= 80;
         ArrayList<Card> copy = new ArrayList<>(rareCards);
         if (extraEpic() || twoCommons()) {
             Card rare = copy.get(getRandomInt(0,rareCards.size() - 1));
